@@ -792,24 +792,6 @@ vs_params_t vs_params = {
 sg_apply_uniforms(SG_SHADERSTAGE_VS, SLOT_vs_params, &SG_RANGE(vs_params));
 ```
 
-The GLSL uniform block can have an explicit bind slot:
-
-```glsl
-layout(binding=0) uniform vs_params {
-    mat4 mvp;
-};
-```
-
-In this case the generated bind slot constant can be ignored since it has
-been explicitly defined as 0:
-
-```c
-vs_params_t vs_params = {
-    .mvp = ...
-};
-sg_apply_uniforms(SG_SHADERSTAGE_VS, 0, &SG_RANGE(vs_params));
-```
-
 ### Binding images
 
 When using a texture sampler in a GLSL vertex- or fragment-shader like this:
@@ -833,23 +815,6 @@ or ```fs_images``` bind slot array:
 sg_apply_bindings(&(sg_bindings){
     .vertex_buffers[0] = vbuf,
     .fs_images[SLOT_tex] = img
-});
-```
-
-Just like with uniform blocks, texture sampler bind slots can
-be defined explicitly in the GLSL shader:
-
-```glsl
-layout(binding=0) uniform sampler2D tex;
-...
-```
-
-...in this case the code-generated bind-slot constant can be ignored:
-
-```c
-sg_apply_bindings(&(sg_bindings){
-    .vertex_buffers[0] = vbuf,
-    .fs_images[0] = img
 });
 ```
 
